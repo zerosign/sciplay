@@ -2,10 +2,9 @@ FROM base/archlinux
 
 MAINTAINER zerosign <r1nlx0@gmail.com>
 
-RUN cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup; \
-	 sed -i 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup; \
-	 rankmirrors -n 6 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist; \
-	 pacman-key --init; \
+COPY scripts/mirrorlist /etc/pacman.d/mirrorlist
+
+RUN pacman-key --init; \
 	 pacman-key --populate archlinux; \
 	 pacman -Sy archlinux-keyring --noconfirm; \
 	 pacman-key --refresh-keys; \
@@ -19,8 +18,8 @@ VOLUME ["/home/developer"]
 RUN mkdir -p /home/developer/Repositories
 WORKDIR /home/developer/Repositories
 
-COPY ../scripts/spark-path.sh /etc/profile.d/spark-path.sh
-COPY ../scripts/spark.sh /etc/profile.d/spark.sh
+COPY scripts/spark-path.sh /etc/profile.d/spark-path.sh
+COPY scripts/spark.sh /etc/profile.d/spark.sh
 RUN chmod +x /etc/profile.d/spark-path.sh
 RUN chmod +x /etc/profile.d/spark.sh
 
