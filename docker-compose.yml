@@ -1,12 +1,10 @@
 spark:
   build: spark
-  image: local/spark
   container_name: spark
   cpu_shares: 6
 
 notebook:
   build: jupyterlab
-  image: local/jupyterlab
   container_name: jupyterlab
   cpu_shares: 2
   links:
